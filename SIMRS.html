@@ -962,7 +962,28 @@ function saveAuditLog(aktivitas, detail) {
     logs.push(logBaru);
     localStorage.setItem('auditLogs', JSON.stringify(logs));
 }
+// 1. Ambil data yang sudah ada di LocalStorage saat halaman pertama kali dibuka
+let dataPasien = JSON.parse(localStorage.getItem("database_simrs")) || [];
 
+// 2. Fungsi untuk menyimpan data saat form disubmit
+function simpanData(event) {
+    event.preventDefault(); // Mencegah halaman nge-refresh otomatis!
+
+    // Ambil nilai dari inputan form
+    const nama = document.getElementById("input-nama").value;
+    const rm = document.getElementById("input-rm").value;
+
+    const pasienBaru = { noRM: rm, namaPasien: nama };
+
+    // Masukkan ke dalam array
+    dataPasien.push(pasienBaru);
+
+    // SIMPAN KE LOCAL STORAGE (Ini kuncinya agar data tersimpan di browser)
+    localStorage.setItem("database_simrs", JSON.stringify(dataPasien));
+
+    alert("Data berhasil tersimpan di sistem browser!");
+    tampilkanData(); // Panggil fungsi untuk memperbarui tabel
+}
 // =========================================================================
 // OOMATISASI PENGUPING (CLICK LISTENER GLOBAL) - AMAN TANPA MERUSAK TOMBOL
 // =========================================================================
